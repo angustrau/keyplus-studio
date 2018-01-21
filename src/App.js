@@ -1,21 +1,31 @@
 import React, { Component } from 'react';
-import logo from './logo.svg';
-import './App.css';
+import { connect } from 'react-redux';
 
-class App extends Component {
-  render() {
-    return (
-      <div className="App">
-        <header className="App-header">
-          <img src={logo} className="App-logo" alt="logo" />
-          <h1 className="App-title">Welcome to React</h1>
-        </header>
-        <p className="App-intro">
-          To get started, edit <code>src/App.js</code> and save to reload.
-        </p>
-      </div>
-    );
-  }
+// Import the start/loading screen component
+import Start from 'containers/panels/Start';
+
+// Mapping of locations to panels
+const routes = {
+	'start': Start	
 }
 
-export default App;
+const mapStateToProps = (state) => ({
+	location: state.app.location // The routed location
+})
+
+class App extends Component {
+	constructor(props) {
+		super(props);
+	}
+
+	render() {
+		const { location } = this.props;
+		const VisiblePanel = routes[location];
+
+		return (
+			<VisiblePanel />
+		);
+	}
+}
+
+export default connect(mapStateToProps)(App);
